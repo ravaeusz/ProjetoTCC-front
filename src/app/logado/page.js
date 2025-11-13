@@ -50,27 +50,27 @@ export default function Loged() {
                     <ul className="space-y-4">    
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">1º</span>
-                            <span>Rafael</span>
+                            <span>User</span>
                             <span className="font-bold">1500 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">2º</span>
-                            <span>Maria</span>
+                            <span>User</span>
                             <span className="font-bold">1400 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">3º</span>
-                            <span>João</span>
+                            <span>User</span>
                             <span className="font-bold">1300 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">4º</span>
-                            <span>Ana</span>
+                            <span>User</span>
                             <span className="font-bold">1200 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">5º</span>
-                            <span>Pedro</span>
+                            <span>User</span>
                             <span className="font-bold">1100 pts</span>
                         </li>     
                     </ul>
@@ -80,27 +80,27 @@ export default function Loged() {
                     <ul className="space-y-4">    
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">1º</span>
-                            <span>Rafael</span>
+                            <span>User</span>
                             <span className="font-bold">1500 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">2º</span>
-                            <span>Maria</span>
+                            <span>User</span>
                             <span className="font-bold">1400 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">3º</span>
-                            <span>João</span>
+                            <span>User</span>
                             <span className="font-bold">1300 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">4º</span>
-                            <span>Ana</span>
+                            <span>User</span>
                             <span className="font-bold">1200 pts</span>
                         </li>
                         <li className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
                             <span className="font-bold text-[#211181]">5º</span>
-                            <span>Pedro</span>
+                            <span>User</span>
                             <span className="font-bold">1100 pts</span>
                         </li>     
                     </ul>

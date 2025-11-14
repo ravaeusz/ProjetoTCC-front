@@ -5,7 +5,7 @@
                 {/* spacer para reservar espaço quando o footer estiver fixed */}
                 <div aria-hidden="true" className="h-24 md:h-24" />
 
-                <footer className="fixed w-full bg-[#211181] text-white py-6 bottom-0 left-0">
+                <footer className="fixed w-full bg-white text-[#211181] py-6 bottom-0 left-0 border-t border-gray-200 shadow-md ">
                     <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 ">
                         <div className="flex items-center gap-3 text-sm">
                             <span className="font-medium">&copy; {new Date().getFullYear()} 4Help</span>
@@ -23,7 +23,7 @@
                             </a>
                         </div>
 
-                        <div className="text-xs text-white/80 text-center md:text-right">
+                        <div className="text-xs text-[#211181] text-center md:text-right">
                             Desenvolvido por <span className="font-semibold">Rafael Girardi</span>
                         </div>
                     </div>

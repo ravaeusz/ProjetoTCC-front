@@ -1,18 +1,19 @@
-
-import "./globals.css";
+"use client"
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 import NavBar from "@/components/navBar";
-import FootBar from "@/components/footBar"; 
+import FootBar from "@/components/footBar";
+import "./globals.css";
 
 export default function RootLayout({ children }) {
-
-  const login = false;
-
   return (
-    <html lang="pt_br">
+    <html lang="pt-BR">
       <body>
-        <NavBar />
-      {children}
-        <FootBar />
+        <Provider store={store}>
+          <NavBar />
+          {children}
+          <FootBar />    
+        </Provider>
       </body>
     </html>
   );

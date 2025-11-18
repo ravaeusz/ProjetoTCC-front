@@ -17,7 +17,7 @@ const registerSlice = createSlice({
       state.success = false;
     },
     registerSuccess: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.email;
       state.loading = false;
       state.success = true;
     },

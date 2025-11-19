@@ -41,3 +41,14 @@ export async function rankTopThree(token) {
 //        });
 //        return response.data;   
 //}
+
+//ROTA QUIZ
+
+export async function fetchQuizByCategory(token) {
+    const response = await axios.get(`${url}/api/question`,{
+        headers: { Authorization: `Bearer ${token}` }
+    }
+
+    );
+    return response.data;
+}

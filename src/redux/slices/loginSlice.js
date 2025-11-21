@@ -19,6 +19,7 @@ const loginSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.token = action.payload.token;
+      state.userId = action.payload.us_id;
       state.user = action.payload.email;
       state.escola = action.payload.escola;
       state.isAuthenticated = true;

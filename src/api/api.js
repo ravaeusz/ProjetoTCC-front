@@ -52,3 +52,10 @@ export async function fetchQuizByCategory(token) {
     );
     return response.data;
 }
+
+export async function submitAnswers( user_id, token) {
+    const response = await axios.post(`${url}/rank/acerto`, {user_id: user_id}, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+}  

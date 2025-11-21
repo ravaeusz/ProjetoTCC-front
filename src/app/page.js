@@ -2,62 +2,103 @@
 
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { rankTopThree, fetchQuizByCategory } from "@/api/api";
+import { rankTopThree, fetchQuizByCategory, submitAnswers } from "@/api/api";
 
 export default function Home() {
 
   const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleQuiz = () => {
     setQuizStarted(true);
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    loadQuiz(token);
+    setCurrentQuestionIndex(1);
+    setUserAnswers([]);
+    loadQuestion(1);
   }
 
   const loginState = useSelector((state) => state.login);
   const isAuthenticated = loginState.isAuthenticated;
+  const userId = loginState.userId;
   const token = loginState.token;
+
   const [general, setGeneral] = useState([]);
   const [school, setSchool] = useState([]);
-  const [quiz, setQuiz] = useState([]);
+  
 
   const podiumTopThree = async (token) => {
     setGeneral(await rankTopThree(token));
   }
 
-  const loadQuiz = async (token) => {
-    const data = await fetchQuizByCategory(token);
-    setQuiz(Array.isArray(data) ? data : [data]);
+  const loadQuestion = async (questionIndex) => {
+    setLoading(true);
+    try {
+      const data = await fetchQuizByCategory(token);
+      // se API retorna array, pega a questão pelo índice
+      const question = Array.isArray(data) ? data[questionIndex - 1] : data;
+      setCurrentQuestion(question);
+    } catch (err) {
+      console.error("Erro ao carregar questão:", err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     if (isAuthenticated && token) {
       podiumTopThree(token);
-      ;
     }
   }, [token, isAuthenticated]);
 
-  const currentQuestion = quiz[currentQuestionIndex];
+  const handleNextQuestion = async (token, userId) => {
+    setLoading(true);
+    try {
+      if (selectedAnswer !== currentQuestion.correctAlternative) {
+        console.log("Resposta incorreta");
+        return;
+      }
+      const result = await submitAnswers(userId, token);
+      console.log("Resultado do quiz enviado:", result);
+    } catch (err) {
+      console.error("Erro ao enviar respostas:", err);
+    } finally {
+      setLoading(false);
+    }
 
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < quiz.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+    // salva resposta atual
+    if (currentQuestion) {
+      const isCorrect = selectedAnswer === currentQuestion.correctAlternative;
+      setUserAnswers(prev => [
+        ...prev,
+        {
+          questionIndex: currentQuestionIndex,
+          selected: selectedAnswer,
+          correctAlternative: currentQuestion.correctAlternative,
+          isCorrect
+        }
+      ]);
+    }
+
+    // verifica se chegou a 20 questões
+    if (currentQuestionIndex < 20) {
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
       setSelectedAnswer(null);
+      await loadQuestion(nextIndex);
     } else {
+      // finaliza quiz
       setQuizStarted(false);
       setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      console.log("Quiz finalizado! Respostas:", userAnswers);
+      // aqui você pode enviar userAnswers ao backend
     }
   }
 
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setSelectedAnswer(null);
-    }
-  }
 
   return (
     <>
@@ -79,18 +120,17 @@ export default function Home() {
                   <h2 className="text-2xl font-bold text-[#211181] mb-2">{currentQuestion.title}</h2>
                   <div className="flex gap-4 text-sm text-gray-600">
                     <span className="font-bold">Disciplina: {currentQuestion.discipline}</span>
-                    <span className="font-bold">Questão: {currentQuestion.index}</span>
                   </div>
                 </div>
 
-                {/* Contexto */}
+                {/* CONTEXTO */}
                 <div className="mb-6 p-4 bg-gray-50 rounded">
                   <p className="text-gray-700 whitespace-pre-wrap">{currentQuestion.context}</p>
                 </div>
 
-                {/* Imagens */}
+                {/* IMAGEM */}
                 {currentQuestion.files && currentQuestion.files.length > 0 && (
-                  <div className="mb-6 flex justify-center">
+                  <div className="mb-6 flex justify-center max-w-200">
                     {currentQuestion.files.map((file, idx) => (
                       <img key={idx} src={file} alt={`Questão ${idx}`} className="max-w-full rounded" />
                     ))}
@@ -115,33 +155,29 @@ export default function Home() {
                       {alt.letter}. {alt.text || "(Sem texto)"}
                     </button>
                   ))}
+                  <p className=""> {currentQuestion.correctAlternative} </p>
                 </div>
 
                 {/* Botões de navegação */}
                 <div className="flex gap-4 justify-between">
-                  <button
-                    onClick={handlePreviousQuestion}
-                    disabled={currentQuestionIndex === 0}
-                    className="bg-gray-500 text-white py-2 px-4 rounded font-bold hover:opacity-90 disabled:opacity-50"
-                  >
-                    ← Anterior
-                  </button>
+                  
                   <span className="flex items-center font-bold text-gray-700">
-                    Questão {currentQuestionIndex + 1} de {quiz.length}
+                    Questão {currentQuestionIndex} de 20
                   </span>
-                  {currentQuestionIndex === quiz.length - 1 ? (
+                  {currentQuestionIndex === 20 ? (
                     <button
-                      onClick={() => setQuizStarted(false)}
+                      onClick={() => {handleNextQuestion(token, userId); podiumTopThree(token);}}
                       className="bg-green-500 text-white py-2 px-4 rounded font-bold hover:opacity-90"
                     >
                       Finalizar
                     </button>
                   ) : (
                     <button
-                      onClick={handleNextQuestion}
-                      className="bg-[#211181] text-white py-2 px-4 rounded font-bold hover:opacity-90"
+                      onClick={() => {handleNextQuestion(token, userId)}}
+                      disabled={loading}
+                      className="bg-[#211181] text-white py-2 px-4 rounded font-bold hover:opacity-90 disabled:opacity-50"
                     >
-                      Próxima →
+                      {loading ? "Carregando..." : "Próxima →"}
                     </button>
                   )}
                 </div>
@@ -157,7 +193,8 @@ export default function Home() {
                     Iniciar Quiz Geral
                   </button>
                   <button
-                    onClick={() => alert("Temporariamente indisponível")}
+                    onClick={() => console.log(general)}
+
                     className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:bg-gray-400 text-lg"
                   >
                     Iniciar Por Disciplinas
@@ -175,8 +212,8 @@ export default function Home() {
                 <ul className="space-y-4">
                   {general.map((item, idx) => (
                     <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
-                      <span className="font-bold text-[#211181]">{item.key}º</span>
-                      <span>{item.nome}</span>
+                      <span className="font-bold text-[#211181]">{idx+1}º</span>
+                      <span className="font-bold">{item.user[0].nome}</span>
                       <span className="font-bold">{item.pontos} pts</span>
                     </li>
                   ))}

@@ -27,6 +27,7 @@ export default function Home() {
 
   const [general, setGeneral] = useState([]);
   const [school, setSchool] = useState([]);
+  const [msg, Setmsg] = useState("");
   
 
   const podiumTopThree = async (token) => {
@@ -56,20 +57,19 @@ export default function Home() {
   const handleNextQuestion = async (token, userId) => {
     setLoading(true);
     try {
-      if (selectedAnswer !== currentQuestion.correctAlternative) {
-        console.log("Resposta incorreta");
-        return;
-      }
+      if (selectedAnswer === currentQuestion.correctAlternative) {
       const result = await submitAnswers(userId, token);
-      console.log("Resultado do quiz enviado:", result);
+      Setmsg(result.msg);
+      }else if (selectedAnswer !== currentQuestion.correctAlternative){
+        Setmsg("Resposta incorreta");
+      }
+      
     } catch (err) {
       console.error("Erro ao enviar respostas:", err);
     } finally {
       setLoading(false);
     }
 
-
-    // salva resposta atual
     if (currentQuestion) {
       const isCorrect = selectedAnswer === currentQuestion.correctAlternative;
       setUserAnswers(prev => [
@@ -83,19 +83,18 @@ export default function Home() {
       ]);
     }
 
-    // verifica se chegou a 20 questões
+    
     if (currentQuestionIndex < 20) {
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
       setSelectedAnswer(null);
       await loadQuestion(nextIndex);
     } else {
-      // finaliza quiz
       setQuizStarted(false);
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
-      console.log("Quiz finalizado! Respostas:", userAnswers);
-      // aqui você pode enviar userAnswers ao backend
+      
+      
     }
   }
 
@@ -112,7 +111,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-row gap-6 p-6 min-h-screen bg-gray-100 mt-20">
+        <div className="flex flex-row gap-6 p-6 min-h-screen bg-gray-100 mt-10">
           <div className="flex-1">
             {quizStarted && currentQuestion ? (
               <div className="bg-white p-10 rounded-lg shadow-lg">
@@ -155,7 +154,8 @@ export default function Home() {
                       {alt.letter}. {alt.text || "(Sem texto)"}
                     </button>
                   ))}
-                  <p className=""> {currentQuestion.correctAlternative} </p>
+                  {loading ? (<p className="bg-orange-400 text-white p-2 rounded">{msg}</p>) : ("")}
+                  
                 </div>
 
                 {/* Botões de navegação */}
@@ -193,8 +193,6 @@ export default function Home() {
                     Iniciar Quiz Geral
                   </button>
                   <button
-                    onClick={() => console.log(general)}
-
                     className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:bg-gray-400 text-lg"
                   >
                     Iniciar Por Disciplinas

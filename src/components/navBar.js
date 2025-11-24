@@ -22,14 +22,14 @@ export default function NavBar() {
     };
 
     return (
-        <div className="fixed top-0 left-0 right-0 bg-[#211181] h-20 w-full flex items-center z-50 shadow-md">
+        <div className="top-0 left-0 right-0 bg-white h-20 w-full flex items-center z-50 shadow-md">
             <div className="absolute left-1/2 transform -translate-x-1/2">
-                <Link href="/" className="text-white font-bold text-4xl">4HELP</Link>
+                <Link href="/" className="text-[#211181] font-bold text-4xl">4HELP</Link>
             </div>
             <div className="ml-auto pr-6 flex items-center gap-4">
                 {isAuthenticated ? (
                     <>
-                        <span className="text-white font-bold">Olá, {userName}!</span>
+                        <span className="text-[#211181] font-bold">Olá, {userName}!</span>
                         <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded font-bold hover:opacity-90">
                             Logout
                         </button>

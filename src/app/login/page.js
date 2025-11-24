@@ -41,7 +41,7 @@ export default function Login() {
       dispatch(registerStart());
       try {
         
-        const payload = { nome, email, senha, escola, ROLE };
+        const payload = { nome, email, senha, escola, ROLE: "USER" };
       
         const data = await registerUser(payload);
         console.log(data);
@@ -91,8 +91,7 @@ export default function Login() {
                   <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
                   <input type="password" placeholder="Senha" value={senha} onChange={(e)=>setSenha(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
                   <input type="text" placeholder="Escola" value={escola} onChange={(e)=>setEscola(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
-                  <input type="text" placeholder="Função" value={ROLE} onChange={(e)=>setROLE(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
-                  <button type="submit" className="w-full bg-[#211181] text-white py-2 rounded font-bold hover:opacity-90">{registerState.loading ? "Carregando..." : "Registrar"}</button>
+                <button type="submit" className="w-full bg-[#211181] text-white py-2 rounded font-bold hover:opacity-90">{registerState.loading ? "Carregando..." : "Registrar"}</button>
                 </form>
               )}
             </div>

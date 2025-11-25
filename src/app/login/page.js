@@ -41,7 +41,7 @@ export default function Login() {
       dispatch(registerStart());
       try {
         
-        const payload = { nome, email, senha, escola, ROLE: "USER" };
+        const payload = { nome, email, senha, escola, ROLE };
       
         const data = await registerUser(payload);
         console.log(data);
@@ -73,10 +73,12 @@ export default function Login() {
                 Registrar
               </button>
             </div>
-    
-            <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="relative bg-white p-8 rounded-lg shadow-lg">
+            
+             
               {isLogin ? (
                 <form onSubmit={handleLoginSubmit} className="space-y-4">
+                  
                   <h2 className="text-2xl font-bold text-[#211181] mb-6">Login</h2>
                   {loginState.error && <p className="text-red-500">{loginState.error}</p>}
                   <input type="email"  placeholder={userEmail}  value={email} onChange={(e)=>setEmail(e.target.value)} required className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
@@ -91,9 +93,11 @@ export default function Login() {
                   <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
                   <input type="password" placeholder="Senha" value={senha} onChange={(e)=>setSenha(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
                   <input type="text" placeholder="Escola" value={escola} onChange={(e)=>setEscola(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
-                <button type="submit" className="w-full bg-[#211181] text-white py-2 rounded font-bold hover:opacity-90">{registerState.loading ? "Carregando..." : "Registrar"}</button>
+                  <input type="text" placeholder="Função" value={ROLE} onChange={(e)=>setROLE(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#211181]" />
+                  <button type="submit" className="w-full bg-[#211181] text-white py-2 rounded font-bold hover:opacity-90">{registerState.loading ? "Carregando..." : "Registrar"}</button>
                 </form>
               )}
+              
             </div>
           </div>
         </div>

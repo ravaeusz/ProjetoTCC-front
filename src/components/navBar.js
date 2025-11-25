@@ -35,7 +35,7 @@ export default function NavBar() {
                         </button>
                     </>
                 ) : (
-                    <Link href="/login" className="text-white font-bold cursor-pointer hover:opacity-90">
+                        <Link href="/login" className="text-[#211181] font-bold cursor-pointer hover:opacity-90">
                         Login/Register
                     </Link>
                 )}

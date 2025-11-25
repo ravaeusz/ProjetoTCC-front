@@ -1,8 +1,9 @@
 "use client"
 
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { rankTopThree, fetchQuizByCategory, submitAnswers } from "@/api/api";
+
 
 export default function Home() {
 
@@ -28,6 +29,7 @@ export default function Home() {
   const [general, setGeneral] = useState([]);
   const [school, setSchool] = useState([]);
   const [msg, Setmsg] = useState("");
+  const [result, Setresult] = useState("");
   
 
   const podiumTopThree = async (token) => {
@@ -38,7 +40,6 @@ export default function Home() {
     setLoading(true);
     try {
       const data = await fetchQuizByCategory(token);
-      // se API retorna array, pega a questão pelo índice
       const question = Array.isArray(data) ? data[questionIndex - 1] : data;
       setCurrentQuestion(question);
     } catch (err) {
@@ -59,16 +60,20 @@ export default function Home() {
     try {
       if (selectedAnswer === currentQuestion.correctAlternative) {
       const result = await submitAnswers(userId, token);
-      Setmsg(result.msg);
-      }else if (selectedAnswer !== currentQuestion.correctAlternative){
-        Setmsg("Resposta incorreta");
-      }
       
+      Setmsg(result.msg);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      }else if (selectedAnswer !== currentQuestion.correctAlternative){
+        
+        Setmsg("Resposta incorreta, alternativa correta: " + currentQuestion.correctAlternative);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     } catch (err) {
       console.error("Erro ao enviar respostas:", err);
     } finally {
       setLoading(false);
     }
+    ;
 
     if (currentQuestion) {
       const isCorrect = selectedAnswer === currentQuestion.correctAlternative;
@@ -83,7 +88,9 @@ export default function Home() {
       ]);
     }
 
-    
+    ;
+
+
     if (currentQuestionIndex < 20) {
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
@@ -96,7 +103,9 @@ export default function Home() {
       
       
     }
+     Setmsg("");
   }
+ 
 
 
   return (
@@ -145,6 +154,7 @@ export default function Home() {
                     <button
                       key={idx}
                       onClick={() => setSelectedAnswer(alt.letter)}
+                      
                       className={`w-full p-4 text-left rounded border-2 font-bold transition ${
                         selectedAnswer === alt.letter
                           ? "border-[#211181] bg-[#211181] text-white"
@@ -154,7 +164,12 @@ export default function Home() {
                       {alt.letter}. {alt.text || "(Sem texto)"}
                     </button>
                   ))}
-                  {loading ? (<p className="bg-orange-400 text-white p-2 rounded">{msg}</p>) : ("")}
+                {msg === "Resposta incorreta, alternativa correta:" + currentQuestion.correctAlternative ? (
+                  <p className="mt-4 text-red-600 bg-red-200 p-2 font-bold">{msg}</p>
+                ) : (
+                  <p className="mt-4 text-green-600  p-2 font-bold">{msg}</p>
+                )}
+
                   
                 </div>
 

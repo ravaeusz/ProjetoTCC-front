@@ -120,25 +120,25 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-row gap-6 p-6 min-h-screen bg-gray-100 mt-10">
+        <div className="flex flex-col lg:flex-row gap-6 p-4 lg:p-6 min-h-screen bg-gray-100 mt-10">
           <div className="flex-1">
             {quizStarted && currentQuestion ? (
-              <div className="bg-white p-10 rounded-lg shadow-lg">
+              <div className="bg-white p-6 lg:p-10 rounded-lg shadow-lg">
                 <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-[#211181] mb-2">{currentQuestion.title}</h2>
-                  <div className="flex gap-4 text-sm text-gray-600">
+                  <h2 className="text-xl lg:text-2xl font-bold text-[#211181] mb-2">{currentQuestion.title}</h2>
+                  <div className="flex gap-4 text-xs lg:text-sm text-gray-600">
                     <span className="font-bold">Disciplina: {currentQuestion.discipline}</span>
                   </div>
                 </div>
 
                 {/* CONTEXTO */}
                 <div className="mb-6 p-4 bg-gray-50 rounded">
-                  <p className="text-gray-700 whitespace-pre-wrap">{currentQuestion.context}</p>
+                  <p className="text-gray-700 whitespace-pre-wrap text-sm lg:text-base">{currentQuestion.context}</p>
                 </div>
 
                 {/* IMAGEM */}
                 {currentQuestion.files && currentQuestion.files.length > 0 && (
-                  <div className="mb-6 flex justify-center max-w-200">
+                  <div className="mb-6 flex justify-center max-w-full lg:max-w-200">
                     {currentQuestion.files.map((file, idx) => (
                       <img key={idx} src={file} alt={`Questão ${idx}`} className="max-w-full rounded" />
                     ))}
@@ -146,7 +146,7 @@ export default function Home() {
                 )}
 
                 {/* Introdução das alternativas */}
-                <p className="font-bold text-gray-700 mb-4">{currentQuestion.alternativesIntroduction}</p>
+                <p className="font-bold text-gray-700 mb-4 text-sm lg:text-base">{currentQuestion.alternativesIntroduction}</p>
 
                 {/* Alternativas */}
                 <div className="space-y-3 mb-8">
@@ -154,8 +154,7 @@ export default function Home() {
                     <button
                       key={idx}
                       onClick={() => setSelectedAnswer(alt.letter)}
-                      
-                      className={`w-full p-4 text-left rounded border-2 font-bold transition ${
+                      className={`w-full p-3 lg:p-4 text-left rounded border-2 font-bold transition text-sm lg:text-base ${
                         selectedAnswer === alt.letter
                           ? "border-[#211181] bg-[#211181] text-white"
                           : "border-gray-300 bg-white text-gray-700 hover:border-[#211181]"
@@ -165,24 +164,21 @@ export default function Home() {
                     </button>
                   ))}
                 {msg === "Resposta incorreta, alternativa correta:" + currentQuestion.correctAlternative ? (
-                  <p className="mt-4 text-red-600 bg-red-200 p-2 font-bold">{msg}</p>
+                  <p className="mt-4 text-red-600 bg-red-200 p-2 font-bold text-sm">{msg}</p>
                 ) : (
-                  <p className="mt-4 text-green-600  p-2 font-bold">{msg}</p>
+                  <p className="mt-4 text-green-600 p-2 font-bold text-sm">{msg}</p>
                 )}
-
-                  
                 </div>
 
                 {/* Botões de navegação */}
-                <div className="flex gap-4 justify-between">
-                  
-                  <span className="flex items-center font-bold text-gray-700">
+                <div className="flex flex-col sm:flex-row gap-4 justify-between items-center sm:items-end">
+                  <span className="flex items-center font-bold text-gray-700 text-sm lg:text-base">
                     Questão {currentQuestionIndex} de 20
                   </span>
                   {currentQuestionIndex === 20 ? (
                     <button
                       onClick={() => {handleNextQuestion(token, userId); podiumTopThree(token);}}
-                      className="bg-green-500 text-white py-2 px-4 rounded font-bold hover:opacity-90"
+                      className="w-full sm:w-auto bg-green-500 text-white py-2 px-4 rounded font-bold hover:opacity-90"
                     >
                       Finalizar
                     </button>
@@ -190,7 +186,7 @@ export default function Home() {
                     <button
                       onClick={() => {handleNextQuestion(token, userId)}}
                       disabled={loading}
-                      className="bg-[#211181] text-white py-2 px-4 rounded font-bold hover:opacity-90 disabled:opacity-50"
+                      className="w-full sm:w-auto bg-[#211181] text-white py-2 px-4 rounded font-bold hover:opacity-90 disabled:opacity-50"
                     >
                       {loading ? "Carregando..." : "Próxima →"}
                     </button>
@@ -198,17 +194,17 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <div className="bg-white p-10 rounded-lg shadow-lg text-center">
-                <h1 className="text-4xl font-bold mb-8 text-[#211181]">Clique no botão abaixo e desafie-se.</h1>
+              <div className="bg-white p-6 lg:p-10 rounded-lg shadow-lg text-center">
+                <h1 className="text-2xl lg:text-4xl font-bold mb-8 text-[#211181]">Clique no botão abaixo e desafie-se.</h1>
                 <div className="flex gap-4 justify-center flex-col">
                   <button
                     onClick={handleQuiz}
-                    className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:opacity-90 text-lg"
+                    className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:opacity-90 text-base lg:text-lg"
                   >
                     Iniciar Quiz Geral
                   </button>
                   <button
-                    className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:bg-gray-400 text-lg"
+                    className="bg-[#211181] text-white py-3 px-6 rounded font-bold hover:bg-gray-400 text-base lg:text-lg"
                   >
                     Iniciar Por Disciplinas
                   </button>
@@ -218,13 +214,13 @@ export default function Home() {
           </div>
 
           {/* Ranking Section */}
-          <div className="w-80 flex flex-col gap-6">
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h2 className="text-3xl font-bold text-[#211181] text-center mb-6">Ranking Geral</h2>
+          <div className="w-full lg:w-80 flex flex-col gap-6">
+            <div className="bg-white p-6 lg:p-8 rounded-lg shadow-lg">
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#211181] text-center mb-6">Ranking Geral</h2>
               {general.length > 0 ? (
                 <ul className="space-y-4">
                   {general.map((item, idx) => (
-                    <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
+                    <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100 text-sm lg:text-base">
                       <span className="font-bold text-[#211181]">{idx+1}º</span>
                       <span className="font-bold">{item.user[0].nome}</span>
                       <span className="font-bold">{item.pontos} pts</span>
@@ -235,12 +231,12 @@ export default function Home() {
                 <p className="text-gray-500 text-center">Carregando...</p>
               )}
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h2 className="text-3xl font-bold text-[#211181] text-center mb-6">Ranking Escola</h2>
+            <div className="bg-white p-6 lg:p-8 rounded-lg shadow-lg">
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#211181] text-center mb-6">Ranking Escola</h2>
               {school.length > 0 ? (
                 <ul className="space-y-4">
                   {school.map((item, idx) => (
-                    <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100">
+                    <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100 text-sm lg:text-base">
                       <span className="font-bold text-[#211181]">{item.key}º</span>
                       <span>{item.nome}</span>
                       <span className="font-bold">{item.pontos} pts</span>

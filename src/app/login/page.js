@@ -56,6 +56,7 @@ export default function Login() {
 
     return (
         <div className="pt-20 bg-gray-100 flex items-center justify-center ">
+          
           <div className="w-full max-w-md mt-10">
             <h1 className="text-4xl font-bold text-center text-[#211181] mb-5">Bem-vindo</h1>
             <p className="text-center mb-10">Por favor, faça login ou registre-se para continuar.</p>
